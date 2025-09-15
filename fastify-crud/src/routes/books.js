@@ -50,4 +50,38 @@ export default async function booksRoutes(app) {
         return reply.send(books);
     });
 
+    // UPDATE
+    app.put('/books/:id', {
+        schema: {
+            params: idParamSchema,
+            body: bookBodySchema
+        }
+    }, async (req, reply) => {
+        const id = parseInt(req.params.id);
+        const { title, author } = req.body;
+
+        try {
+            const updated = await app.prisma.book.update({
+                where: { id },
+                data: { title, author }
+            });
+            return reply.send(updated);
+        } catch (error) {
+            return reply.code(404).send({ error: 'Book not found or update failed' });
+        }
+    });
+
+    // DELETE
+    app.delete('/books/:id', { schema: { params: idParamSchema } }, async (req, reply) => {
+        const id = parseInt(req.params.id);
+
+        try {
+            await app.prisma.book.delete({ where: { id } });
+            return reply.code(204).send();
+        } catch (error) {
+            return reply.code(404).send({ error: 'Book not found or delete failed' });
+        }
+    });
+
+
 }
