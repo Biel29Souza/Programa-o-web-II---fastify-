@@ -3,12 +3,26 @@ export default async function booksRoutes(app) {
 
     const bookBodySchema = {
         type: 'object',
-        required: ['id'],
+        required: ['title', 'author'],
         properties: {
             title: { type: 'string', minLength: 1},
             author: {type: 'string', minLength: 1}
         }
     };
+
+
+    // const BibliotecarioBodySchema = {
+    //     type: 'object',
+    //     require: ['id'],
+    //     properties: {
+    //         nome: { type: 'string', minLength: 1},
+    //         email: {type: 'string', minLength: 1},
+    //         endereco: {type: 'string', minLength: 1},
+    //         nascimento: {type: 'dateTime', minLength: 1}
+    //     }
+    // };
+
+
 
 
     const idParamSchema = {
@@ -53,9 +67,10 @@ export default async function booksRoutes(app) {
             });
             return reply.send(updated);
         } catch (error) {
-            return reply.code(404).send({ error: 'Book not found or update failed' });
+            return reply.code(404).send({ error: 'Livro não encontrado ou atualização falhou' });
         }
     });
+
 
     // DELETE
     app.delete('/books/:id', { schema: { params: idParamSchema } }, async (req, reply) => {
@@ -65,8 +80,9 @@ export default async function booksRoutes(app) {
             await app.prisma.book.delete({ where: { id } });
             return reply.code(204).send();
         } catch (error) {
-            return reply.code(404).send({ error: 'Book not found or delete failed' });
+            return reply.code(404).send({ error: 'Livro não encontrado ou falha na exclusão' });
         }
     });
+
 
 }
