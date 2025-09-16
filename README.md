@@ -5,8 +5,11 @@ prisma
 # Parte 1
 
 mkdir fastify-crud && cd fastify-crud 
+
 npm init -y
+
 npm i fastify @prisma/cliente
+
 npm i -D prisma nodemon vitest
 
 
@@ -48,6 +51,7 @@ npx prisma init --datasource-provider sqlite
 npx prisma migrate dev --name init
 
 npx prisma generate 
+
 npx prisma studio
 
 
